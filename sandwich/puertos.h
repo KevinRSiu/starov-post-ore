@@ -16,7 +16,7 @@
 #define sensor_IR1 36
 #define sensor_IR2 37
 #define sensor_IR3 38
-#define sensor_IR4 36
+#define sensor_IR4 39
 #define sensor_IR5 40
 #define sensor_IR6 41
 #define sensor_IR7 42

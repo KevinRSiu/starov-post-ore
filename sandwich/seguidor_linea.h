@@ -21,6 +21,28 @@ void actualizar_lecturas_IR(){
   return;
 }
 
+void imprimir_lecturas_IR(){
+  actualizar_lecturas_IR();
+  Serial.print("IR1: ");
+  Serial.print(lectura_sensor_IR1);
+  Serial.print(" | IR2: "); 
+  Serial.print(lectura_sensor_IR2);
+  Serial.print(" | IR3: "); 
+  Serial.print(lectura_sensor_IR3);
+  Serial.print(" | IR4: "); 
+  Serial.print(lectura_sensor_IR4);
+  Serial.print(" | IR5: "); 
+  Serial.print(lectura_sensor_IR5);
+  Serial.print(" | IR6: "); 
+  Serial.print(lectura_sensor_IR6);
+  Serial.print(" | IR7: "); 
+  Serial.print(lectura_sensor_IR7);
+  Serial.print(" | IR8: "); 
+  Serial.println(lectura_sensor_IR8);
+
+  return;
+}
+
 float kp = 1.0, ki = 0.0, kd = 0.0;
 float lp = 0.0, li = 0.0, ld = 0.0;
 float vel_obj = 25.0; 

@@ -37,6 +37,11 @@ void setup() {
 
 void loop() {
   //test_motores();  
+
+  imprimir_lecturas_IR();
+  delay(1000);
+
+  /*
   if( leerUltrasonidoFrente() <= 10.0 ){ //HAY UN OBSTACULO
     detener(0);    
   }else{ //NO HAY OBSTACULO. PROCEDER CON LINEA
@@ -44,4 +49,5 @@ void loop() {
   } 
 
   delay(100);
+  */
 }

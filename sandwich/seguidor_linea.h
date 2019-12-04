@@ -43,9 +43,9 @@ void imprimir_lecturas_IR(){
   return;
 }
 
-float kp = 1.0, ki = 0.0, kd = 0.0;
+float kp = 20.0, ki = 0.0, kd = 0.0;
 float lp = 0.0, li = 0.0, ld = 0.0;
-float vel_obj = 25.0; 
+float vel_obj = 20.0; 
 float error = 0.0, integral = 0.0, derivada = 0.0, last_error = 0.0;
 
 void pid(){
@@ -61,7 +61,7 @@ void pid(){
   int suma = l_1+l_2+l_3+l_4+l_5+l_6+l_7+l_8; 
 
   //Decidir Accion
-  error = 0 - suma;
+  error = 0 + suma;
   integral = integral + error;
   derivada = error-last_error; 
   float vel_lin = vel_obj - (lp*error + li*integral + ld*derivada);
@@ -88,13 +88,13 @@ void pid(){
   if(vel_izq < 0){
     digitalWrite(motor_izqdel_pos,LOW);
     digitalWrite(motor_izqdel_neg,HIGH);
-    digitalWrite(motor_izqatr_pos,HIGH);
-    digitalWrite(motor_izqatr_neg,LOW);
+    digitalWrite(motor_izqatr_pos,LOW);
+    digitalWrite(motor_izqatr_neg,HIGH);
   }else{
     digitalWrite(motor_izqdel_pos,HIGH);
     digitalWrite(motor_izqdel_neg,LOW);
-    digitalWrite(motor_izqatr_pos,LOW);
-    digitalWrite(motor_izqatr_neg,HIGH);    
+    digitalWrite(motor_izqatr_pos,HIGH);
+    digitalWrite(motor_izqatr_neg,LOW);    
   }
   int vel_motor_izq = fabs(vel_izq);
   vel_motor_izq = map(vel_motor_izq,0,100,155,255);
@@ -102,13 +102,13 @@ void pid(){
   if(vel_der < 0){
     digitalWrite(motor_derdel_pos,LOW);
     digitalWrite(motor_derdel_neg,HIGH);
-    digitalWrite(motor_deratr_pos,HIGH);
-    digitalWrite(motor_deratr_neg,LOW);
+    digitalWrite(motor_deratr_pos,LOW);
+    digitalWrite(motor_deratr_neg,HIGH);
   }else{
     digitalWrite(motor_derdel_pos,HIGH);
     digitalWrite(motor_derdel_neg,LOW);
-    digitalWrite(motor_deratr_pos,LOW);
-    digitalWrite(motor_deratr_neg,HIGH); 
+    digitalWrite(motor_deratr_pos,HIGH);
+    digitalWrite(motor_deratr_neg,LOW); 
   }
   int vel_motor_der = fabs(vel_der);
   vel_motor_der = map(vel_motor_der,0,100,155,255);
@@ -117,6 +117,12 @@ void pid(){
   analogWrite(motor_izqatr_vel,vel_motor_izq);
   analogWrite(motor_derdel_vel,vel_motor_der);
   analogWrite(motor_deratr_vel,vel_motor_der);   
+
+  Serial.print("vel_izq =");
+  Serial.print(vel_motor_izq);
+  Serial.print(" vel_der =");
+  Serial.println(vel_motor_der);
+  
   return; 
 }
 
@@ -124,5 +130,32 @@ void seguidor_linea(){
   actualizar_lecturas_IR();
 
   // TO-DO: RECUADROS VERDES
-  pid(); 
-}
+  int v_1  = lectura_sensor_IR1;
+  int v_2  = lectura_sensor_IR2;
+  int v_3  = lectura_sensor_IR3;
+  int v_4  = lectura_sensor_IR4;
+  int v_5  = lectura_sensor_IR5;
+  int v_6  = lectura_sensor_IR6;
+  int v_7  = lectura_sensor_IR7;
+  int v_8  = lectura_sensor_IR8;
+  if  (v_1 == 0 && v_2 == 0 && v_3 == 0 && v_4 == 0 && v_5 == 0 && v_6 == 0 && v_7 == 0 && v_8 == 0){
+    detener(0);
+  }
+  if (v_1 == 0 && v_2 == 0 && v_3 == 0 && v_4 == 0 && v_5 == 0){
+    detener(0);
+  }
+  if (v_4 == 0 && v_5 == 0 && v_6 == 0 && v_7 == 0 && v_8 == 0){
+    detener(0);
+  }
+  if (v_1 == 0 && v_2 == 0 && v_3 == 0 && v_4){
+    detener(0);
+  }
+  if (v_5 == 0 && v_6 == 0 && v_7 == 0 && v_8 == 0){
+    detener(0);
+  }
+  else{ 
+  pid();}
+  }
+  
+  
+

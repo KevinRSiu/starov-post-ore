@@ -1,66 +1,58 @@
-#include "puertos.h"
 int lectura_sensores[8] = {0,0,0,0,0,0,0,0};
-int puertos_sensores[8] = {sensor_IR1,sensor_IR2,sensor_IR3,sensor_IR4,sensor_IR5,sensor_IR6,sensor_IR7,sensor_IR8};
-int Lecturas_PID[8] = {0,0,0,0,0,0,0,0};
-
-int lectura_sensor_IR1 = 0;
-int lectura_sensor_IR2 = 0;
-int lectura_sensor_IR3 = 0;
-int lectura_sensor_IR4 = 0;
-int lectura_sensor_IR5 = 0;
-int lectura_sensor_IR6 = 0;
-int lectura_sensor_IR7 = 0;
-int lectura_sensor_IR8 = 0;
+int puertos_sensores[8] = {sensor_IR1,sensor_IR2,sensor_IR3,
+                           sensor_IR4,sensor_IR5,sensor_IR6,
+                           sensor_IR7,sensor_IR8};
 
 void actualizar_lecturas_IR(){
-  for(int i=0;i<8;i=i++){
-  lectura_sensores[i] = digitalRead(puertos_sensores[i]);
-  }
+
+  for(int i=0;i<8;i+=1){
+    lectura_sensores[i] = digitalRead(puertos_sensores[i]);
+  }  
   return;
-  
 }
 
 void imprimir_lecturas_IR(){
+  
   actualizar_lecturas_IR();
-  Serial.print("IR1: ");
-  Serial.print(lectura_sensor_IR1);
-  Serial.print(" | IR2: "); 
-  Serial.print(lectura_sensor_IR2);
-  Serial.print(" | IR3: "); 
-  Serial.print(lectura_sensor_IR3);
-  Serial.print(" | IR4: "); 
-  Serial.print(lectura_sensor_IR4);
-  Serial.print(" | IR5: "); 
-  Serial.print(lectura_sensor_IR5);
-  Serial.print(" | IR6: "); 
-  Serial.print(lectura_sensor_IR6);
-  Serial.print(" | IR7: "); 
-  Serial.print(lectura_sensor_IR7);
-  Serial.print(" | IR8: "); 
-  Serial.println(lectura_sensor_IR8);
-
+  
+  for (int i=0;i<8;i=i+1){
+    if(i==0){
+      Serial.print("IR");
+    }else{
+      Serial.print(" | IR");
+    }
+    Serial.print(i+1);
+    Serial.print(": ");
+    if(i==7){
+      Serial.println(lectura_sensores[i]);
+    }else{
+      Serial.print(lectura_sensores[i]);
+    }  
+        
+  }
+    
   return;
 }
 
-float kp = 20.0, ki = 0.0, kd = 0.0;
+float kp = 20.0, ki = 0.001, kd = 0.0;
 float lp = 0.0, li = 0.0, ld = 0.0;
 float vel_obj = 20.0; 
 float error = 0.0, integral = 0.0, derivada = 0.0, last_error = 0.0;
 
-/*
-void actualizar_lecturas_IR(){
-  for(int i=0;i<8;i=i++){
-  lectura_sensores[i] = digitalRead(puertos_sensores[i]);
-  }
-  return;
-*/
-
 void pid(){
   //Tomar Lecturas
-  for(int i=0;i<8;i=i++){
-    int Lectura_PID[i]  = lectura_sensores[i] * i-4;
-  int suma = l_1+l_2+l_3+l_4+l_5+l_6+l_7+l_8; 
-
+  
+  int suma = 0;
+  
+  for(int i=0;i<8;i++){
+    int coeficiente = i-4;
+    if(coeficiente >=0){
+      coeficiente++;
+    }
+    suma  = suma + (lectura_sensores[i] * coeficiente);
+  }
+  
+  
   //Decidir Accion
   error = 0 + suma;
   integral = integral + error;
@@ -131,32 +123,31 @@ void seguidor_linea(){
   actualizar_lecturas_IR();
 
   // TO-DO: RECUADROS VERDES
-  int v_1  = lectura_sensor_IR1;
-  int v_2  = lectura_sensor_IR2;
-  int v_3  = lectura_sensor_IR3;
-  int v_4  = lectura_sensor_IR4;
-  int v_5  = lectura_sensor_IR5;
-  int v_6  = lectura_sensor_IR6;
-  int v_7  = lectura_sensor_IR7;
-  int v_8  = lectura_sensor_IR8;
-  if  (v_1 == 0 && v_2 == 0 && v_3 == 0 && v_4 == 0 && v_5 == 0 && v_6 == 0 && v_7 == 0 && v_8 == 0){
+  int variables[8] = {0,0,0,0,0,0,0,0};
+
+  for (int i=0; i<8; i= i+1){  
+    variables[i] = (lectura_sensores[i]);
+  }
+  
+  
+  if  (variables[0] == 0 && variables[1] == 0 && variables[2] == 0 && variables[3] == 0 && variables[4] == 0 && variables[5] == 0 && variables[6] == 0 && variables[7] == 0){
     detener(0);
   }
-  if (v_1 == 0 && v_2 == 0 && v_3 == 0 && v_4 == 0 && v_5 == 0){
+  if (variables[0] == 0 && variables[1] == 0 && variables[2] == 0 && variables[3] == 0 && variables[4] == 0){
     detener(0);
   }
-  if (v_4 == 0 && v_5 == 0 && v_6 == 0 && v_7 == 0 && v_8 == 0){
+  if (variables[3] == 0 && variables[4] == 0 && variables[5] == 0 && variables[6] == 0 && variables[7] == 0){
     detener(0);
   }
-  if (v_1 == 0 && v_2 == 0 && v_3 == 0 && v_4){
+  if (variables[0] == 0 && variables[1] == 0 && variables[2] == 0 && variables[3] == 0){
     detener(0);
   }
-  if (v_5 == 0 && v_6 == 0 && v_7 == 0 && v_8 == 0){
+  if (variables[4] == 0 && variables[5] == 0 && variables[6] == 0 && variables[7] == 0){
     detener(0);
   }
   else{ 
-  pid();}
+   pid();   
   }
   
-  
-
+  return;
+}

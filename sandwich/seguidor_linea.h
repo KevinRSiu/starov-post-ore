@@ -1,5 +1,8 @@
 #include "puertos.h"
 
+int lectura_sensores[8]= {0,0,0,0,0,0,0,0}; 
+int puertos_sensores[8]= {sensor_IR1,sensor_IR2,sensor_IR3,sensor_IR4,sensor_IR5,sensor_IR6,sensor_IR7,sensor_IR8};
+
 int lectura_sensor_IR1 = 0;
 int lectura_sensor_IR2 = 0;
 int lectura_sensor_IR3 = 0;
@@ -10,36 +13,49 @@ int lectura_sensor_IR7 = 0;
 int lectura_sensor_IR8 = 0;
 
 void actualizar_lecturas_IR(){
-  lectura_sensor_IR1 = digitalRead(sensor_IR1);
-  lectura_sensor_IR2 = digitalRead(sensor_IR2);
-  lectura_sensor_IR3 = digitalRead(sensor_IR3);
-  lectura_sensor_IR4 = digitalRead(sensor_IR4);
-  lectura_sensor_IR5 = digitalRead(sensor_IR5);
-  lectura_sensor_IR6 = digitalRead(sensor_IR6);
-  lectura_sensor_IR7 = digitalRead(sensor_IR7);
-  lectura_sensor_IR8 = digitalRead(sensor_IR8);
+
+  for(int i=0;i<8;i=i+1){
+  lectura_sensores[i] = digitalRead(puertos_sensores[i]);
+  }
   return;
 }
 
 void imprimir_lecturas_IR(){
   actualizar_lecturas_IR();
-  Serial.print("IR1: ");
-  Serial.print(lectura_sensor_IR1);
-  Serial.print(" | IR2: "); 
-  Serial.print(lectura_sensor_IR2);
-  Serial.print(" | IR3: "); 
-  Serial.print(lectura_sensor_IR3);
-  Serial.print(" | IR4: "); 
-  Serial.print(lectura_sensor_IR4);
-  Serial.print(" | IR5: "); 
-  Serial.print(lectura_sensor_IR5);
-  Serial.print(" | IR6: "); 
-  Serial.print(lectura_sensor_IR6);
-  Serial.print(" | IR7: "); 
-  Serial.print(lectura_sensor_IR7);
-  Serial.print(" | IR8: "); 
-  Serial.println(lectura_sensor_IR8);
-
+  
+  for (int i=0;i<1;i=i+1){
+    Serial.print(lectura_sensores[i]);
+    Serial.print(" | IR1: ");
+  }
+   for (int i=0;i<2;i=i+1){
+    Serial.print(lectura_sensores[i]);
+    Serial.print(" | IR2: ");
+  } 
+   for (int i=0;i<3;i=i+1){
+    Serial.print(lectura_sensores[i]);
+    Serial.print(" | IR3: ");
+  }
+   for (int i=0;i<4;i=i+1){
+    Serial.print(lectura_sensores[i]);
+    Serial.print(" | IR4: ");
+  }
+   for (int i=0;i<5;i=i+1){
+    Serial.print(lectura_sensores[i]);
+    Serial.print(" | IR5: ");
+  }
+   for (int i=0;i<6;i=i+1){
+    Serial.print(lectura_sensores[i]);
+    Serial.print(" | IR6: ");
+  }
+   for (int i=0;i<7;i=i+1){
+    Serial.print(lectura_sensores[i]);
+    Serial.print(" | IR7: ");
+  }
+   for (int i=0;i<8;i=i+1){
+    Serial.print(lectura_sensores[i]);
+    Serial.println(" | IR8: ");
+  }
+   
   return;
 }
 

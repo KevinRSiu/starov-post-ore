@@ -38,8 +38,8 @@ void setup() {
 void loop() {
   //test_motores();  
 
- // imprimir_lecturas_IR();
-  //delay(1000);
+  imprimir_lecturas_IR();
+  delay(1000);
 
   /*
   if( leerUltrasonidoFrente() <= 10.0 ){ //HAY UN OBSTACULO

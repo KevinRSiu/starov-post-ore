@@ -1,4 +1,7 @@
 #include "puertos.h"
+int lectura_sensores[8] = {0,0,0,0,0,0,0,0};
+int puertos_sensores[8] = {sensor_IR1,sensor_IR2,sensor_IR3,sensor_IR4,sensor_IR5,sensor_IR6,sensor_IR7,sensor_IR8};
+int Lecturas_PID[8] = {0,0,0,0,0,0,0,0};
 
 int lectura_sensor_IR1 = 0;
 int lectura_sensor_IR2 = 0;
@@ -10,15 +13,11 @@ int lectura_sensor_IR7 = 0;
 int lectura_sensor_IR8 = 0;
 
 void actualizar_lecturas_IR(){
-  lectura_sensor_IR1 = digitalRead(sensor_IR1);
-  lectura_sensor_IR2 = digitalRead(sensor_IR2);
-  lectura_sensor_IR3 = digitalRead(sensor_IR3);
-  lectura_sensor_IR4 = digitalRead(sensor_IR4);
-  lectura_sensor_IR5 = digitalRead(sensor_IR5);
-  lectura_sensor_IR6 = digitalRead(sensor_IR6);
-  lectura_sensor_IR7 = digitalRead(sensor_IR7);
-  lectura_sensor_IR8 = digitalRead(sensor_IR8);
+  for(int i=0;i<8;i=i++){
+  lectura_sensores[i] = digitalRead(puertos_sensores[i]);
+  }
   return;
+  
 }
 
 void imprimir_lecturas_IR(){
@@ -48,16 +47,18 @@ float lp = 0.0, li = 0.0, ld = 0.0;
 float vel_obj = 20.0; 
 float error = 0.0, integral = 0.0, derivada = 0.0, last_error = 0.0;
 
+/*
+void actualizar_lecturas_IR(){
+  for(int i=0;i<8;i=i++){
+  lectura_sensores[i] = digitalRead(puertos_sensores[i]);
+  }
+  return;
+*/
+
 void pid(){
   //Tomar Lecturas
-  int l_1  = lectura_sensor_IR1 * -4;
-  int l_2  = lectura_sensor_IR2 * -3;
-  int l_3  = lectura_sensor_IR3 * -2;
-  int l_4  = lectura_sensor_IR4 * -1;
-  int l_5  = lectura_sensor_IR5 * 1;
-  int l_6  = lectura_sensor_IR6 * 2;
-  int l_7  = lectura_sensor_IR7 * 3;
-  int l_8  = lectura_sensor_IR8 * 4;
+  for(int i=0;i<8;i=i++){
+    int Lectura_PID[i]  = lectura_sensores[i] * i-4;
   int suma = l_1+l_2+l_3+l_4+l_5+l_6+l_7+l_8; 
 
   //Decidir Accion

@@ -53,4 +53,3 @@ void loop() {
 seguidor_linea();
 delay(100);
 }
-

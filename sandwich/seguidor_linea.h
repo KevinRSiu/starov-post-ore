@@ -1,5 +1,9 @@
 #include "puertos.h"
 
+
+int lectura_sensores[8] = {0,0,0,0,0,0,0,0};
+int puertos_sensores[8] = {sensor_IR1,sensor_IR2,sensor_IR3,sensor_IR4,sensor_IR5,sensor_IR6,sensor_IR7,sensor_IR8};
+
 int lectura_sensor_IR1 = 0;
 int lectura_sensor_IR2 = 0;
 int lectura_sensor_IR3 = 0;
@@ -10,14 +14,10 @@ int lectura_sensor_IR7 = 0;
 int lectura_sensor_IR8 = 0;
 
 void actualizar_lecturas_IR(){
-  lectura_sensor_IR1 = digitalRead(sensor_IR1);
-  lectura_sensor_IR2 = digitalRead(sensor_IR2);
-  lectura_sensor_IR3 = digitalRead(sensor_IR3);
-  lectura_sensor_IR4 = digitalRead(sensor_IR4);
-  lectura_sensor_IR5 = digitalRead(sensor_IR5);
-  lectura_sensor_IR6 = digitalRead(sensor_IR6);
-  lectura_sensor_IR7 = digitalRead(sensor_IR7);
-  lectura_sensor_IR8 = digitalRead(sensor_IR8);
+  for (int i=0; i<8; i= i+1){
+  
+  lectura_sensores[i] = digitalRead(puertos_sensores[i]);
+  }
   return;
 }
 
@@ -129,7 +129,7 @@ void pid(){
 void seguidor_linea(){
   actualizar_lecturas_IR();
 
-  // TO-DO: RECUADROS VERDES
+  
   int v_1  = lectura_sensor_IR1;
   int v_2  = lectura_sensor_IR2;
   int v_3  = lectura_sensor_IR3;
@@ -138,19 +138,28 @@ void seguidor_linea(){
   int v_6  = lectura_sensor_IR6;
   int v_7  = lectura_sensor_IR7;
   int v_8  = lectura_sensor_IR8;
-  if  (v_1 == 0 && v_2 == 0 && v_3 == 0 && v_4 == 0 && v_5 == 0 && v_6 == 0 && v_7 == 0 && v_8 == 0){
+  // TO-DO: RECUADROS VERDES
+  int variables [8] = {v_1,v_2,v_3,v_4,v_5,v_6,v_7,v_8};
+
+  for (int i=0; i<8; i= i+1){
+  
+  variables[i] = (lectura_sensores[i]);
+  }
+  
+  
+  if  (variables[0] == 0 && variables[1] == 0 && variables[2] == 0 && variables[3] == 0 && variables[4] == 0 && variables[5] == 0 && variables[6] == 0 && variables[7] == 0){
     detener(0);
   }
-  if (v_1 == 0 && v_2 == 0 && v_3 == 0 && v_4 == 0 && v_5 == 0){
+  if (variables[0] == 0 && variables[1] == 0 && variables[2] == 0 && variables[3] == 0 && variables[4] == 0){
     detener(0);
   }
-  if (v_4 == 0 && v_5 == 0 && v_6 == 0 && v_7 == 0 && v_8 == 0){
+  if (variables[3] == 0 && variables[4] == 0 && variables[5] == 0 && variables[6] == 0 && variables[7] == 0){
     detener(0);
   }
-  if (v_1 == 0 && v_2 == 0 && v_3 == 0 && v_4){
+  if (variables[0] == 0 && variables[1] == 0 && variables[2] == 0 && variables[3]){
     detener(0);
   }
-  if (v_5 == 0 && v_6 == 0 && v_7 == 0 && v_8 == 0){
+  if (variables[4] == 0 && variables[5] == 0 && variables[6] == 0 && variables[7] == 0){
     detener(0);
   }
   else{ 
